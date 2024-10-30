@@ -3,7 +3,7 @@
 const logoutButton = new LogoutButton();
 
 function checkResponse(response) {
-  if (response.success === true) {
+  if (response.success) {
     location.reload();
   } else {
     response.error;
@@ -13,3 +13,11 @@ function checkResponse(response) {
 logoutButton.action = () => {
   ApiConnector.logout(checkResponse);
 };
+
+ApiConnector.current(response => {
+  if (response.success) {
+    ProfileWidget.showProfile(response.data);
+  } else {
+    response.error;
+  }
+});

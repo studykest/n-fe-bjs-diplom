@@ -3,7 +3,7 @@
 const userForm = new UserForm();
 
 function checkResponse(response, method) {
-  if (response.success === true) {
+  if (response.success) {
     location.reload();
   } else {
     userForm[method](response.error);
