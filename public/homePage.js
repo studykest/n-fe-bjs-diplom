@@ -21,3 +21,18 @@ ApiConnector.current(response => {
     response.error;
   }
 });
+
+const ratesBoard = new RatesBoard();
+
+function showRatesBoard() {
+  ApiConnector.getStocks(response => {
+    if (response.success) {
+      ratesBoard.clearTable();
+      ratesBoard.fillTable(response.data);
+    } else {
+      response.error;
+    }
+  });
+}
+
+setInterval(showRatesBoard, 1000);
