@@ -1,5 +1,5 @@
 "use strict"
-
+// Выход из личного кабинета
 const logoutButton = new LogoutButton();
 
 function checkResponse(response) {
@@ -14,6 +14,7 @@ logoutButton.action = () => {
   ApiConnector.logout(checkResponse);
 };
 
+// Получение информации о пользователе
 ApiConnector.current(response => {
   if (response.success) {
     ProfileWidget.showProfile(response.data);
@@ -22,6 +23,7 @@ ApiConnector.current(response => {
   }
 });
 
+// Получение текущих курсов валюты
 const ratesBoard = new RatesBoard();
 
 function showRatesBoard() {
@@ -37,6 +39,7 @@ function showRatesBoard() {
 
 setInterval(showRatesBoard, 1000);
 
+// Операции с деньгами
 const moneyManager = new MoneyManager();
 
 function checkResponseMoneyManager(response, message) {
@@ -63,9 +66,10 @@ moneyManager.sendMoneyCallback = (data) => {
   ApiConnector.transferMoney(data, response => checkResponseMoneyManager(response, message));
 };
 
+// Работа с избранным
 const favoritesWidget = new FavoritesWidget();
 
-function checkResponse2(response) {
+function checkResponseFavoritesWidget(response) {
   if (response.success) {
     favoritesWidget.clearTable();
     favoritesWidget.fillTable(response.data);
@@ -75,14 +79,14 @@ function checkResponse2(response) {
   }
 }
 
-ApiConnector.getFavorites(checkResponse2);
+ApiConnector.getFavorites(checkResponseFavoritesWidget);
 
 favoritesWidget.addUserCallback = (data) => {
-  ApiConnector.addUserToFavorites(data, checkResponse2);
+  ApiConnector.addUserToFavorites(data, checkResponseFavoritesWidget);
   favoritesWidget.setMessage(data.id, 'Добавлен новый пользователь');
 }
 
 favoritesWidget.removeUserCallback = (data) => {
-  ApiConnector.removeUserFromFavorites(data, checkResponse2);
+  ApiConnector.removeUserFromFavorites(data, checkResponseFavoritesWidget);
   favoritesWidget.setMessage(data.id, 'Удалён пользователь');
 }
